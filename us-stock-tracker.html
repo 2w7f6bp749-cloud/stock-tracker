@@ -5,220 +5,166 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>US Stock Tracker</title>
 <style>
-/* ── リセット ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-/* ── 変数 ── */
 :root{
   --bg:#0a0e17;--surface:#111827;--surface2:#1a2332;
-  --border:#1f2d3d;--border2:#263548;
-  --accent:#00e5ff;--up:#00e676;--down:#ff1744;--neutral:#607d8b;
-  --text:#e8f0fe;--muted:#546e7a;--sub:#78909c;
-  --font-mono:'Courier New',Courier,monospace;
-  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;
+  --border:#1f2d3d;--accent:#00e5ff;--up:#00e676;--down:#ff1744;--neutral:#607d8b;
+  --text:#e8f0fe;--muted:#546e7a;
+  --mono:'Courier New',Courier,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;
 }
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
 
-body{background:var(--bg);color:var(--text);font-family:var(--font-sans);min-height:100vh;display:flex;flex-direction:column}
-
-/* ── HEADER ── */
-header{
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
-  padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface);
-  position:sticky;top:0;z-index:100;
-}
-.logo{font-family:var(--font-mono);font-size:17px;font-weight:700;letter-spacing:.1em;color:var(--accent)}
+/* HEADER */
+header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  padding:13px 20px;border-bottom:1px solid var(--border);background:var(--surface);
+  position:sticky;top:0;z-index:100}
+.logo{font-family:var(--mono);font-size:16px;font-weight:700;letter-spacing:.1em;color:var(--accent)}
 .logo em{color:var(--muted);font-style:normal;font-weight:400}
-
-/* ── FX ── */
-.fx-wrap{display:flex;align-items:center;gap:8px}
+.fx-wrap{text-align:center}
 .fx-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-.fx-rate{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--accent)}
+.fx-rate{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent)}
 .fx-time{font-size:10px;color:var(--muted)}
 .fx-flash{animation:fxblink .5s ease-out}
 @keyframes fxblink{0%{color:#fff}100%{color:var(--accent)}}
-
-/* ── STATUS ── */
 .status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--neutral)}
 .dot.live{background:var(--up);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── MAIN ── */
-main{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;max-width:1200px;width:100%;margin:0 auto}
+/* MAIN */
+main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;max-width:1200px;width:100%;margin:0 auto}
 
-/* ── TOOLBAR ── */
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.add-input{
-  background:var(--surface);border:1px solid var(--border);color:var(--text);
-  font-family:var(--font-mono);font-size:14px;padding:9px 13px;border-radius:6px;
-  text-transform:uppercase;outline:none;width:190px;transition:border-color .2s
-}
+/* TOOLBAR */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.add-input{background:var(--surface);border:1px solid var(--border);color:var(--text);
+  font-family:var(--mono);font-size:14px;padding:8px 12px;border-radius:6px;
+  text-transform:uppercase;outline:none;width:180px;transition:border-color .2s}
 .add-input:focus{border-color:var(--accent)}
-.add-input::placeholder{color:var(--muted);text-transform:none;font-family:var(--font-sans)}
-
-.btn{font-family:var(--font-sans);font-size:13px;font-weight:500;padding:9px 16px;border:none;border-radius:6px;cursor:pointer;transition:opacity .15s,transform .1s;white-space:nowrap}
+.add-input::placeholder{color:var(--muted);text-transform:none;font-family:var(--sans)}
+.btn{font-family:var(--sans);font-size:13px;font-weight:500;padding:8px 14px;border:none;
+  border-radius:6px;cursor:pointer;transition:opacity .15s,transform .1s;white-space:nowrap}
 .btn:active{transform:scale(.97)}
-.btn-add{background:var(--accent);color:#000}
-.btn-add:hover{opacity:.85}
-.btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:9px 12px;font-size:14px}
-.btn-icon:hover{color:var(--text);border-color:var(--border2)}
+.btn-add{background:var(--accent);color:#000}.btn-add:hover{opacity:.85}
+.btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 11px;font-size:14px}
+.btn-icon:hover{color:var(--text);border-color:var(--border)}
 .btn-icon.active{color:var(--accent);border-color:var(--accent)}
-
-.sort-select{
-  background:var(--surface2);border:1px solid var(--border);color:var(--sub);
-  font-size:12px;padding:9px 10px;border-radius:6px;outline:none;cursor:pointer
-}
-.sort-select:focus{border-color:var(--accent)}
-
+.sort-sel{background:var(--surface2);border:1px solid var(--border);color:var(--muted);
+  font-size:12px;padding:8px 10px;border-radius:6px;outline:none;cursor:pointer}
 .hint{font-size:12px;color:var(--muted)}
 
-/* ── CARD GRID (通常モード) ── */
+/* CARD GRID */
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-
-.card{
-  background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:18px;display:flex;flex-direction:column;gap:10px;transition:border-color .3s
-}
-.card.up-flash  {border-color:var(--up);  box-shadow:0 0 14px rgba(0,230,118,.12)}
-.card.down-flash{border-color:var(--down); box-shadow:0 0 14px rgba(255,23,68,.12)}
-
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:16px;display:flex;flex-direction:column;gap:9px;transition:border-color .4s,box-shadow .4s}
+.card.flash-up  {border-color:var(--up);  box-shadow:0 0 14px rgba(0,230,118,.15)}
+.card.flash-down{border-color:var(--down); box-shadow:0 0 14px rgba(255,23,68,.15)}
 .card-hd{display:flex;justify-content:space-between;align-items:flex-start}
-.sym{font-family:var(--font-mono);font-size:19px;font-weight:700;letter-spacing:.06em}
-.name{font-size:11px;color:var(--muted);margin-top:2px}
-
+.sym{font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:.06em}
+.cname{font-size:11px;color:var(--muted);margin-top:2px}
 .btn-del{background:transparent;border:1px solid var(--border);color:var(--muted);
-  font-size:15px;padding:3px 9px;line-height:1;border-radius:5px;cursor:pointer;transition:all .15s}
+  font-size:14px;padding:3px 8px;line-height:1;border-radius:5px;cursor:pointer;transition:all .15s}
 .btn-del:hover{border-color:var(--down);color:var(--down)}
-
 .price-row{display:flex;align-items:flex-end;gap:8px}
-.price-usd{font-family:var(--font-mono);font-size:26px;font-weight:700;line-height:1}
-.price-usd.up{color:var(--up)}.price-usd.down{color:var(--down)}.price-usd.flat{color:var(--text)}
-.price-jpy{font-family:var(--font-mono);font-size:12px;color:var(--muted);padding-bottom:3px}
-
-.badge-row{display:flex;gap:8px;font-family:var(--font-mono);font-size:12px}
+.pusd{font-family:var(--mono);font-size:25px;font-weight:700;line-height:1}
+.pusd.up{color:var(--up)}.pusd.down{color:var(--down)}.pusd.flat{color:var(--text)}
+.pjpy{font-family:var(--mono);font-size:12px;color:var(--muted);padding-bottom:3px}
+.badge-row{display:flex;gap:7px;font-family:var(--mono);font-size:12px}
 .badge{padding:3px 8px;border-radius:4px;font-weight:700}
 .badge.up  {background:rgba(0,230,118,.12);color:var(--up)}
 .badge.down{background:rgba(255,23,68,.12); color:var(--down)}
 .badge.flat{background:rgba(96,125,139,.12);color:var(--neutral)}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding-top:7px;
+  border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+.meta-item span{display:block;font-family:var(--mono);color:var(--text);font-size:12px;margin-top:1px}
+.updated{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px}
 
-.meta{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
-.meta-item span{display:block;font-family:var(--font-mono);color:var(--text);font-size:12px;margin-top:1px}
+/* PNL */
+.pnl-toggle{font-size:11px;color:var(--accent);background:none;border:none;
+  cursor:pointer;text-align:left;padding:2px 0;display:block}
+.pnl-box{display:none;padding:10px;background:var(--surface2);border-radius:6px;
+  border:1px solid var(--border);flex-direction:column;gap:8px}
+.pnl-box.open{display:flex}
+.pnl-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pnl-lbl{font-size:11px;color:var(--muted);width:54px;flex-shrink:0}
+.pnl-inp{background:var(--bg);border:1px solid var(--border);color:var(--text);
+  font-family:var(--mono);font-size:12px;padding:5px 8px;border-radius:4px;
+  outline:none;width:108px;transition:border-color .2s}
+.pnl-inp:focus{border-color:var(--accent)}
+.btn-fetch{font-size:11px;padding:5px 9px;background:var(--surface);border:1px solid var(--border);
+  color:var(--accent);border-radius:4px;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.btn-fetch:hover{opacity:.8}
+.btn-fetch:disabled{color:var(--muted);cursor:default;opacity:.5}
+.fetch-msg{font-size:10px;color:var(--muted);font-family:var(--mono)}
+.pnl-result{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:2px}
+.pnl-cell{background:var(--bg);border-radius:4px;padding:6px 8px;font-size:10px;color:var(--muted)}
+.pnl-cell span{display:block;font-family:var(--mono);font-size:13px;font-weight:700;margin-top:2px}
+.pnl-cell.full{grid-column:1/-1}
 
-/* ── 損益セクション ── */
-.pnl-toggle{
-  font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;
-  text-align:left;padding:0;margin-top:2px
-}
-.pnl-section{
-  display:none;padding:10px;background:var(--surface2);border-radius:6px;
-  border:1px solid var(--border);flex-direction:column;gap:8px
-}
-.pnl-section.open{display:flex}
-.pnl-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.pnl-label{font-size:11px;color:var(--muted);width:56px;flex-shrink:0}
-.pnl-input{
-  background:var(--bg);border:1px solid var(--border);color:var(--text);
-  font-family:var(--font-mono);font-size:12px;padding:5px 8px;border-radius:4px;
-  outline:none;width:110px;transition:border-color .2s
-}
-.pnl-input:focus{border-color:var(--accent)}
-.pnl-result{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:2px}
-.pnl-item{background:var(--bg);border-radius:4px;padding:6px 8px;font-size:10px;color:var(--muted)}
-.pnl-item span{display:block;font-family:var(--font-mono);font-size:13px;font-weight:700;margin-top:2px}
-
-.updated{font-size:10px;color:var(--muted);font-family:var(--font-mono);margin-top:auto}
-
-/* ── shimmer ── */
-.shimmer{background:linear-gradient(90deg,var(--border) 25%,#1a2840 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;height:26px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* ─────────────────────────────────────
-   コンパクトモード
-───────────────────────────────────── */
-.compact-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px}
-.compact-table th{
-  text-align:left;padding:8px 12px;font-size:10px;color:var(--muted);
+/* COMPACT TABLE */
+.compact-wrap{overflow-x:auto}
+.ctbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px}
+.ctbl th{text-align:left;padding:8px 10px;font-size:10px;color:var(--muted);
   border-bottom:1px solid var(--border);letter-spacing:.08em;text-transform:uppercase;
-  font-family:var(--font-sans);cursor:pointer;white-space:nowrap;user-select:none
-}
-.compact-table th:hover{color:var(--text)}
-.compact-table th.sorted{color:var(--accent)}
-.compact-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
-.compact-table tr:hover td{background:var(--surface2)}
-.compact-table tr.up-flash-row  td{background:rgba(0,230,118,.06)}
-.compact-table tr.down-flash-row td{background:rgba(255,23,68,.06)}
+  font-family:var(--sans);white-space:nowrap}
+.ctbl td{padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+.ctbl tr:hover td{background:var(--surface2)}
+.ct-sym{font-weight:700;letter-spacing:.05em}
+.ct-name{font-size:10px;color:var(--muted);font-family:var(--sans);margin-top:1px}
+.ct-r{text-align:right}.ct-c{text-align:center}
+.up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--neutral)}
 
-.ct-sym{font-weight:700;letter-spacing:.06em;color:var(--text)}
-.ct-name{font-size:10px;color:var(--muted);margin-top:1px;font-family:var(--font-sans)}
-.ct-price{font-weight:700;text-align:right}
-.ct-jpy{font-size:11px;color:var(--muted);text-align:right}
-.ct-chg{text-align:right;font-weight:700}
-.ct-chg.up{color:var(--up)}.ct-chg.down{color:var(--down)}.ct-chg.flat{color:var(--neutral)}
-.ct-pnl{text-align:right;font-size:12px}
-.ct-days{text-align:right;font-size:11px;color:var(--muted)}
-.ct-del{text-align:center}
+/* SHIMMER */
+.shimmer{background:linear-gradient(90deg,var(--border) 25%,#1a2840 50%,var(--border) 75%);
+  background-size:200% 100%;animation:sh 1.5s infinite;border-radius:4px;height:24px}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ── EMPTY ── */
+/* EMPTY / TOAST */
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty .big{font-size:44px;margin-bottom:10px}
-
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border);
-  color:var(--text);padding:11px 16px;border-radius:8px;font-size:13px;
-  opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;z-index:999
-}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);padding:10px 15px;border-radius:8px;font-size:13px;
+  opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;z-index:999}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.err{border-color:var(--down);color:var(--down)}
 
-footer{text-align:center;padding:12px;font-size:10px;color:var(--muted);border-top:1px solid var(--border)}
-
+footer{text-align:center;padding:10px;font-size:10px;color:var(--muted);border-top:1px solid var(--border)}
 @media(max-width:480px){
-  header{padding:10px 14px}
-  main{padding:14px}
-  .fx-rate{font-size:17px}
-  .add-input{width:150px}
+  .add-input{width:140px}
+  .card-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-
 <header>
-  <div class="logo">US<em>stock</em>WATCH <em style="font-size:11px">v0.2</em></div>
+  <div class="logo">US<em>stock</em>WATCH <em style="font-size:10px">v0.3</em></div>
   <div class="fx-wrap">
-    <div>
-      <div class="fx-label">USD/JPY</div>
-      <div class="fx-rate" id="fxRate">—</div>
-      <div class="fx-time" id="fxTime">取得中...</div>
-    </div>
+    <div class="fx-label">USD / JPY</div>
+    <div class="fx-rate" id="fxRate">—</div>
+    <div class="fx-time" id="fxTime">取得中...</div>
   </div>
   <div class="status">
     <div class="dot" id="dot"></div>
-    <span id="statusTxt">待機中</span>
+    <span id="stxt">待機中</span>
   </div>
 </header>
 
 <main>
-  <!-- ツールバー -->
   <div class="toolbar">
     <input id="inp" class="add-input" type="text" placeholder="AAPL, TSLA..." maxlength="10">
     <button class="btn btn-add" onclick="addTicker()">＋ 追加</button>
-
-    <select class="sort-select" id="sortSel" onchange="renderAll()">
+    <select class="sort-sel" id="sortSel" onchange="renderAll()">
       <option value="reg">登録順</option>
-      <option value="pct_desc">騰落率 ↓</option>
-      <option value="pct_asc">騰落率 ↑</option>
-      <option value="pnl_desc">損益率 ↓</option>
-      <option value="pnl_asc">損益率 ↑</option>
-      <option value="sym">ティッカー順</option>
+      <option value="pct_d">騰落率 ↓</option>
+      <option value="pct_a">騰落率 ↑</option>
+      <option value="pnl_d">損益率 ↓</option>
+      <option value="pnl_a">損益率 ↑</option>
+      <option value="sym">銘柄順</option>
     </select>
-
-    <button class="btn btn-icon" id="modeBtn" onclick="toggleMode()" title="表示切替">⊞</button>
+    <button class="btn btn-icon" id="modeBtn" onclick="toggleMode()" title="コンパクト切替">⊞</button>
     <button class="btn btn-icon" onclick="fetchAll()" title="今すぐ更新">↻</button>
-    <span class="hint" id="countHint"></span>
+    <span class="hint" id="hint"></span>
   </div>
-
-  <!-- カード／テーブル領域 -->
   <div id="view"></div>
 </main>
 
@@ -226,47 +172,70 @@ footer{text-align:center;padding:12px;font-size:10px;color:var(--muted);border-t
 <footer>データ: Yahoo Finance (非公式) ／ 為替: open.er-api.com ／ 自動更新 30秒</footer>
 
 <script>
-// ─────────────────────────
-//  定数・グローバル
-// ─────────────────────────
 const MAX   = 10;
 const INT   = 30000;
-const SKEY  = 'usstock_v2';
+const SKEY  = 'usstock_v3';   // ← キー固定（以降変更しない）
+const SKEY2 = 'usstock_v2';   // 旧キー（マイグレーション用）
+const SKEY1 = 'usstock_tickers'; // 最旧キー
 const PROXY = 'https://corsproxy.io/?';
 
 let fxRate  = null;
 let tickers = [];   // [{sym, buyPrice, buyDate}]
-let stocks  = {};   // {SYM: {...data}}
+let stocks  = {};
 let compact = false;
-let timer   = null;
 
-// ─────────────────────────
-//  初期化
-// ─────────────────────────
+// ── 初期化 ──────────────────────────────────────────
 function init(){
-  const s = localStorage.getItem(SKEY);
-  if(s){
-    try{ tickers = JSON.parse(s); }catch(e){ tickers=[]; }
-  }
-  if(!tickers.length){
-    tickers = ['AAPL','NVDA','TSLA','MSFT','AMZN'].map(sym=>({sym,buyPrice:'',buyDate:''}));
-  }
+  migrate();
   renderAll();
   fetchAll();
-  timer = setInterval(fetchAll, INT);
+  setInterval(fetchAll, INT);
+}
+
+// ── マイグレーション（旧キー引き継ぎ） ────────────────
+function migrate(){
+  // v3データがあればそのまま使う
+  const v3 = localStorage.getItem(SKEY);
+  if(v3){ try{ tickers=JSON.parse(v3); return; }catch(e){} }
+
+  // v2 → v3
+  const v2 = localStorage.getItem(SKEY2);
+  if(v2){
+    try{
+      tickers = JSON.parse(v2);
+      save();
+      localStorage.removeItem(SKEY2);
+      showToast('銘柄データを引き継ぎました');
+      return;
+    }catch(e){}
+  }
+
+  // v1（最旧形式: 文字列配列）→ v3
+  const v1 = localStorage.getItem(SKEY1);
+  if(v1){
+    try{
+      const arr = JSON.parse(v1);
+      tickers = arr.map(s => typeof s==='string'?{sym:s,buyPrice:'',buyDate:''}:s);
+      save();
+      localStorage.removeItem(SKEY1);
+      showToast('銘柄データを引き継ぎました');
+      return;
+    }catch(e){}
+  }
+
+  // 初回デフォルト
+  tickers = ['AAPL','NVDA','TSLA','MSFT','AMZN'].map(sym=>({sym,buyPrice:'',buyDate:''}));
+  save();
 }
 
 function save(){ localStorage.setItem(SKEY, JSON.stringify(tickers)); }
 
-// ─────────────────────────
-//  為替取得
-// ─────────────────────────
+// ── 為替取得 ────────────────────────────────────────
 async function fetchFX(){
   try{
-    const url = PROXY + encodeURIComponent('https://open.er-api.com/v6/latest/USD');
-    const r   = await fetch(url);
-    const d   = await r.json();
-    if(d.rates && d.rates.JPY){
+    const r = await fetch(PROXY + encodeURIComponent('https://open.er-api.com/v6/latest/USD'));
+    const d = await r.json();
+    if(d.rates?.JPY){
       fxRate = d.rates.JPY;
       const el = document.getElementById('fxRate');
       el.textContent = fxRate.toFixed(2)+' 円';
@@ -276,37 +245,49 @@ async function fetchFX(){
   }catch(e){ document.getElementById('fxTime').textContent='取得失敗'; }
 }
 
-// ─────────────────────────
-//  株価取得
-// ─────────────────────────
+// ── 株価取得（現在値） ──────────────────────────────
 async function fetchStock(sym){
   const url = PROXY + encodeURIComponent(
-    `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`
-  );
-  const r  = await fetch(url);
+    `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`);
+  const r = await fetch(url);
   if(!r.ok) throw new Error(r.status);
-  const j  = await r.json();
-  const m  = j.chart.result[0].meta;
+  const j = await r.json();
+  const m = j.chart.result[0].meta;
   return{
-    sym: m.symbol,
-    name: m.shortName||m.symbol,
-    price: m.regularMarketPrice,
-    prev:  m.chartPreviousClose||m.previousClose,
-    open:  m.regularMarketOpen||null,
-    high:  m.regularMarketDayHigh||null,
-    low:   m.regularMarketDayLow||null,
-    vol:   m.regularMarketVolume||null,
-    cur:   m.currency||'USD',
-    at:    ts(),
+    sym:m.symbol, name:m.shortName||m.symbol,
+    price:m.regularMarketPrice, prev:m.chartPreviousClose||m.previousClose,
+    open:m.regularMarketOpen||null, high:m.regularMarketDayHigh||null,
+    low:m.regularMarketDayLow||null, vol:m.regularMarketVolume||null,
+    at:ts(), err:false
   };
 }
 
+// ── 過去終値取得 ────────────────────────────────────
+async function fetchHistPrice(sym, dateStr){
+  // dateStr: "YYYY-MM-DD"
+  const d    = new Date(dateStr);
+  const from = Math.floor(d.getTime()/1000);
+  const to   = from + 86400*4; // 余裕を持って4日分取得（週末対応）
+  const url  = PROXY + encodeURIComponent(
+    `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&period1=${from}&period2=${to}`);
+  const r = await fetch(url);
+  if(!r.ok) throw new Error(r.status);
+  const j = await r.json();
+  const res = j.chart.result[0];
+  const closes = res.indicators.quote[0].close;
+  // null除外して最初の有効値
+  const price = closes.find(v => v != null);
+  if(!price) throw new Error('no data');
+  return price;
+}
+
+// ── 全データ取得 ────────────────────────────────────
 async function fetchAll(){
   setStatus('loading');
   await fetchFX();
   await Promise.allSettled(tickers.map(async t=>{
     try{
-      stocks[t.sym] = {...await fetchStock(t.sym), err:false};
+      stocks[t.sym] = await fetchStock(t.sym);
     }catch(e){
       if(!stocks[t.sym]) stocks[t.sym]={sym:t.sym,err:true};
     }
@@ -315,33 +296,27 @@ async function fetchAll(){
   renderAll();
 }
 
-// ─────────────────────────
-//  ソート
-// ─────────────────────────
+// ── ソート ──────────────────────────────────────────
 function sorted(){
   const mode = document.getElementById('sortSel').value;
   const arr  = [...tickers];
-  const pct  = sym => {
-    const d = stocks[sym]; if(!d||d.err) return -9999;
-    return (d.price - d.prev)/d.prev*100;
+  const getPct = sym=>{
+    const d=stocks[sym]; if(!d||d.err) return -9999;
+    return (d.price-d.prev)/d.prev*100;
   };
-  const pnlR = t => {
-    const d = stocks[t.sym]; if(!d||d.err||!t.buyPrice) return -9999;
-    return (d.price - parseFloat(t.buyPrice))/parseFloat(t.buyPrice)*100;
+  const getPnl = t=>{
+    const d=stocks[t.sym]; if(!d||d.err||!t.buyPrice) return -9999;
+    return (d.price-parseFloat(t.buyPrice))/parseFloat(t.buyPrice)*100;
   };
-  switch(mode){
-    case 'pct_desc': return arr.sort((a,b)=>pct(b.sym)-pct(a.sym));
-    case 'pct_asc':  return arr.sort((a,b)=>pct(a.sym)-pct(b.sym));
-    case 'pnl_desc': return arr.sort((a,b)=>pnlR(b)-pnlR(a));
-    case 'pnl_asc':  return arr.sort((a,b)=>pnlR(a)-pnlR(b));
-    case 'sym':      return arr.sort((a,b)=>a.sym.localeCompare(b.sym));
-    default:         return arr;
-  }
+  if(mode==='pct_d') return arr.sort((a,b)=>getPct(b.sym)-getPct(a.sym));
+  if(mode==='pct_a') return arr.sort((a,b)=>getPct(a.sym)-getPct(b.sym));
+  if(mode==='pnl_d') return arr.sort((a,b)=>getPnl(b)-getPnl(a));
+  if(mode==='pnl_a') return arr.sort((a,b)=>getPnl(a)-getPnl(b));
+  if(mode==='sym')   return arr.sort((a,b)=>a.sym.localeCompare(b.sym));
+  return arr;
 }
 
-// ─────────────────────────
-//  描画ルーター
-// ─────────────────────────
+// ── 描画ルーター ────────────────────────────────────
 function renderAll(){
   updateHint();
   const view = document.getElementById('view');
@@ -350,55 +325,50 @@ function renderAll(){
     view.innerHTML=`<div class="empty"><div class="big">📈</div><p>ティッカーを追加してください</p></div>`;
     return;
   }
-  compact ? renderTable(list, view) : renderCards(list, view);
+  // スクロール位置を保持
+  const scrollY = window.scrollY;
+  compact ? renderTable(list,view) : renderCards(list,view);
+  window.scrollTo({top:scrollY,behavior:'instant'});
 }
 
-// ─────────────────────────
-//  カードモード
-// ─────────────────────────
-function renderCards(list, view){
-  let html = '<div class="card-grid">';
-  list.forEach(t => { html += cardHTML(t); });
-  html += '</div>';
-  view.innerHTML = html;
-  // フラッシュ
+// ── カードモード ────────────────────────────────────
+function renderCards(list,view){
+  view.innerHTML = '<div class="card-grid">'+list.map(t=>cardHTML(t)).join('')+'</div>';
   list.forEach(t=>{
-    const d = stocks[t.sym]; if(!d||d.err) return;
-    const dir = d.price>d.prev?'up':d.price<d.prev?'down':null;
+    const d=stocks[t.sym]; if(!d||d.err) return;
+    const dir=d.price>d.prev?'up':d.price<d.prev?'down':null;
     if(dir){
-      const el = document.getElementById('c-'+t.sym);
-      if(el){ el.classList.add(dir+'-flash'); setTimeout(()=>el.classList.remove(dir+'-flash'),1200); }
+      const el=document.getElementById('c-'+t.sym);
+      if(el){ el.classList.add('flash-'+dir); setTimeout(()=>el.classList.remove('flash-'+dir),1400); }
     }
   });
 }
 
 function cardHTML(t){
-  const sym = t.sym;
-  const d   = stocks[sym];
+  const d=stocks[t.sym];
   if(!d||d.err) return `
-    <div class="card" id="c-${sym}">
+    <div class="card" id="c-${t.sym}">
       <div class="card-hd">
-        <div><div class="sym">${sym}</div><div class="name" style="color:var(--down)">取得失敗</div></div>
-        <button class="btn-del" onclick="remove('${sym}')">×</button>
+        <div><div class="sym">${t.sym}</div><div class="cname" style="color:var(--down)">取得失敗</div></div>
+        <button class="btn-del" onclick="remove('${t.sym}')">×</button>
       </div>
       <div style="font-size:12px;color:var(--muted)">ティッカーを確認してください</div>
     </div>`;
 
-  const chg = d.price-d.prev, pct=(chg/d.prev*100);
-  const dir = chg>0?'up':chg<0?'down':'flat', sign=chg>0?'+':'';
-  const jpy = fxRate?`≈ ${Math.round(d.price*fxRate).toLocaleString()} 円`:'';
-  const vol = d.vol?(d.vol>=1e6?(d.vol/1e6).toFixed(1)+'M':(d.vol/1e3).toFixed(0)+'K'):'—';
-  const pnlHTML = pnlCardHTML(t, d);
+  const chg=d.price-d.prev, pct=chg/d.prev*100;
+  const dir=chg>0?'up':chg<0?'down':'flat', sign=chg>0?'+':'';
+  const jpy=fxRate?`≈ ${Math.round(d.price*fxRate).toLocaleString()} 円`:'';
+  const vol=d.vol?(d.vol>=1e6?(d.vol/1e6).toFixed(1)+'M':(d.vol/1e3).toFixed(0)+'K'):'—';
 
   return `
-  <div class="card" id="c-${sym}">
+  <div class="card" id="c-${t.sym}">
     <div class="card-hd">
-      <div><div class="sym">${sym}</div><div class="name">${d.name}</div></div>
-      <button class="btn-del" onclick="remove('${sym}')">×</button>
+      <div><div class="sym">${t.sym}</div><div class="cname">${d.name}</div></div>
+      <button class="btn-del" onclick="remove('${t.sym}')">×</button>
     </div>
     <div class="price-row">
-      <div class="price-usd ${dir}">$${d.price.toFixed(2)}</div>
-      <div class="price-jpy">${jpy}</div>
+      <div class="pusd ${dir}">$${d.price.toFixed(2)}</div>
+      <div class="pjpy">${jpy}</div>
     </div>
     <div class="badge-row">
       <span class="badge ${dir}">${sign}${chg.toFixed(2)}</span>
@@ -410,174 +380,197 @@ function cardHTML(t){
       <div class="meta-item">高値<span>$${d.high?d.high.toFixed(2):'—'}</span></div>
       <div class="meta-item">安値<span>$${d.low?d.low.toFixed(2):'—'}</span></div>
     </div>
-    ${pnlHTML}
+    ${pnlHTML(t,d)}
     <div class="updated">更新:${d.at}　Vol:${vol}</div>
   </div>`;
 }
 
-function pnlCardHTML(t, d){
+// ── 損益セクション ──────────────────────────────────
+function pnlHTML(t,d){
   const hasBuy = t.buyPrice && parseFloat(t.buyPrice)>0;
-  let result = '';
+  let result='';
   if(hasBuy){
-    const bp   = parseFloat(t.buyPrice);
-    const diff = d.price - bp;
-    const pct  = diff/bp*100;
-    const dir  = diff>=0?'up':'down', sign=diff>=0?'+':'';
-    const jpyD = fxRate?`${sign}${Math.round(diff*fxRate).toLocaleString()}円`:'';
-    const days = t.buyDate ? Math.floor((Date.now()-new Date(t.buyDate))/(1000*60*60*24)) : null;
-    result = `
+    const bp=parseFloat(t.buyPrice), diff=d.price-bp, pct=diff/bp*100;
+    const dir=diff>=0?'up':'down', sign=diff>=0?'+':'';
+    const jpyD=fxRate?`${sign}${Math.round(diff*fxRate).toLocaleString()}円`:'—';
+    const days=t.buyDate?Math.floor((Date.now()-new Date(t.buyDate))/(864e5)):null;
+    result=`
     <div class="pnl-result">
-      <div class="pnl-item">損益額(USD)<span class="${dir}" style="color:var(--${dir})">${sign}$${diff.toFixed(2)}</span></div>
-      <div class="pnl-item">損益率<span class="${dir}" style="color:var(--${dir})">${sign}${pct.toFixed(2)}%</span></div>
-      <div class="pnl-item">${jpyD?'損益(JPY)':'保有日数'}<span class="${dir}" style="color:var(--${dir})">${jpyD||'—'}</span></div>
-      ${days!==null?`<div class="pnl-item" style="grid-column:1/-1">保有日数<span style="color:var(--text)">${days} 日</span></div>`:''}
+      <div class="pnl-cell">損益(USD)<span class="${dir}">$${sign}${diff.toFixed(2)}</span></div>
+      <div class="pnl-cell">損益率<span class="${dir}">${sign}${pct.toFixed(2)}%</span></div>
+      <div class="pnl-cell">損益(JPY)<span class="${dir}">${jpyD}</span></div>
+      <div class="pnl-cell">保有日数<span>${days!=null?days+'日':'—'}</span></div>
     </div>`;
   }
+
+  const open = document.getElementById('pnl-'+t.sym)?.classList.contains('open');
+
   return `
   <button class="pnl-toggle" onclick="togglePnl('${t.sym}')">
-    ${hasBuy?'💹 損益表示中 ▾':'＋ 購入情報を入力'}
+    ${hasBuy?'💹 損益表示中 ▾':'＋ 購入情報を入力 ▾'}
   </button>
-  <div class="pnl-section${hasBuy?' open':''}" id="pnl-${t.sym}">
+  <div class="pnl-box${(hasBuy||open)?' open':''}" id="pnl-${t.sym}">
     <div class="pnl-row">
-      <span class="pnl-label">購入単価</span>
-      <input class="pnl-input" type="number" step="0.01" placeholder="例: 150.00"
-        value="${t.buyPrice||''}" onchange="setBuy('${t.sym}','price',this.value)" id="bp-${t.sym}">
-      <span style="font-size:11px;color:var(--muted)">USD</span>
+      <span class="pnl-lbl">購入単価</span>
+      <input class="pnl-inp" type="number" step="0.01" min="0" placeholder="150.00"
+        value="${t.buyPrice||''}"
+        onchange="saveBuy('${t.sym}','price',this.value)"
+        id="bp-${t.sym}"> USD
     </div>
     <div class="pnl-row">
-      <span class="pnl-label">購入日</span>
-      <input class="pnl-input" type="date" value="${t.buyDate||''}"
-        onchange="setBuy('${t.sym}','date',this.value)" id="bd-${t.sym}">
+      <span class="pnl-lbl">購入日</span>
+      <input class="pnl-inp" type="date"
+        value="${t.buyDate||''}"
+        onchange="onDateChange('${t.sym}',this.value)"
+        id="bd-${t.sym}">
+      <button class="btn-fetch" id="fb-${t.sym}"
+        onclick="fetchBuyPrice('${t.sym}')"
+        ${t.buyDate?'':'disabled'}>終値取得</button>
     </div>
+    <div class="fetch-msg" id="fm-${t.sym}"></div>
     ${result}
   </div>`;
 }
 
-// ─────────────────────────
-//  テーブルモード（コンパクト）
-// ─────────────────────────
-function renderTable(list, view){
-  let html = `
-  <table class="compact-table">
-    <thead><tr>
-      <th>銘柄</th>
-      <th style="text-align:right">現在値</th>
-      <th style="text-align:right">円換算</th>
-      <th style="text-align:right">騰落率</th>
-      <th style="text-align:right">損益率</th>
-      <th style="text-align:right">保有日数</th>
-      <th></th>
-    </tr></thead>
-    <tbody>`;
-
-  list.forEach(t=>{
-    const d   = stocks[t.sym];
-    const err = !d||d.err;
-    const chgPct = err?null:(d.price-d.prev)/d.prev*100;
-    const dir    = !err?(chgPct>0?'up':chgPct<0?'down':'flat'):'flat';
-    const sign   = chgPct>0?'+':'';
-    const jpy    = (!err&&fxRate)?Math.round(d.price*fxRate).toLocaleString():'—';
-
-    let pnlStr='—', daysStr='—';
-    if(!err && t.buyPrice && parseFloat(t.buyPrice)>0){
-      const bp = parseFloat(t.buyPrice);
-      const pr = (d.price-bp)/bp*100;
-      const sd = pr>=0?'+':'';
-      const pc = pr>=0?'var(--up)':'var(--down)';
-      pnlStr = `<span style="color:${pc}">${sd}${pr.toFixed(2)}%</span>`;
-      if(t.buyDate){
-        daysStr = Math.floor((Date.now()-new Date(t.buyDate))/(1000*60*60*24))+'日';
-      }
-    }
-
-    html += `
-    <tr id="tr-${t.sym}">
-      <td><div class="ct-sym">${t.sym}</div><div class="ct-name">${err?'取得失敗':(d.name||'')}</div></td>
-      <td class="ct-price ${dir}">${err?'—':'$'+d.price.toFixed(2)}</td>
-      <td class="ct-jpy">${err?'—':jpy+'円'}</td>
-      <td class="ct-chg ${dir}">${err?'—':sign+chgPct.toFixed(2)+'%'}</td>
-      <td class="ct-pnl">${pnlStr}</td>
-      <td class="ct-days">${daysStr}</td>
-      <td class="ct-del"><button class="btn-del" onclick="remove('${t.sym}')">×</button></td>
-    </tr>`;
-  });
-
-  html += '</tbody></table>';
-  view.innerHTML = html;
-}
-
-// ─────────────────────────
-//  購入情報 セット
-// ─────────────────────────
-function setBuy(sym, field, val){
+// ── 購入日変更 → ボタン有効化のみ（画面飛び防止） ──────
+function onDateChange(sym, val){
+  // stateだけ更新し再描画しない
   const t = tickers.find(x=>x.sym===sym);
   if(!t) return;
-  if(field==='price') t.buyPrice = val;
-  if(field==='date')  t.buyDate  = val;
+  t.buyDate = val;
+  save();
+  // ボタンだけ有効化
+  const btn = document.getElementById('fb-'+sym);
+  if(btn) btn.disabled = !val;
+  // メッセージリセット
+  const fm = document.getElementById('fm-'+sym);
+  if(fm) fm.textContent='';
+}
+
+// ── 購入日の終値を取得して単価にセット ───────────────
+async function fetchBuyPrice(sym){
+  const t   = tickers.find(x=>x.sym===sym);
+  if(!t || !t.buyDate) return;
+  const btn = document.getElementById('fb-'+sym);
+  const fm  = document.getElementById('fm-'+sym);
+  const bpEl= document.getElementById('bp-'+sym);
+  if(btn){ btn.disabled=true; btn.textContent='取得中...'; }
+  if(fm)  fm.textContent='';
+  try{
+    const price = await fetchHistPrice(sym, t.buyDate);
+    t.buyPrice  = price.toFixed(2);
+    save();
+    if(bpEl) bpEl.value = t.buyPrice;
+    if(fm)   fm.textContent = `✓ ${t.buyDate} 終値: $${t.buyPrice}`;
+    // 損益部分だけ再描画
+    renderAll();
+  }catch(e){
+    if(fm) fm.textContent='取得失敗。日付か銘柄を確認してください';
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent='終値取得'; }
+  }
+}
+
+// ── 購入単価手動変更 ────────────────────────────────
+function saveBuy(sym, field, val){
+  const t=tickers.find(x=>x.sym===sym);
+  if(!t) return;
+  if(field==='price') t.buyPrice=val;
+  if(field==='date')  t.buyDate=val;
   save();
   renderAll();
 }
 
 function togglePnl(sym){
-  const el = document.getElementById('pnl-'+sym);
+  const el=document.getElementById('pnl-'+sym);
   if(el) el.classList.toggle('open');
 }
 
-// ─────────────────────────
-//  追加・削除
-// ─────────────────────────
+// ── コンパクトテーブル ──────────────────────────────
+function renderTable(list,view){
+  let html=`<div class="compact-wrap"><table class="ctbl"><thead><tr>
+    <th>銘柄</th>
+    <th class="ct-r">現在値(USD)</th>
+    <th class="ct-r">円換算</th>
+    <th class="ct-r">騰落率</th>
+    <th class="ct-r">損益率</th>
+    <th class="ct-r">保有日数</th>
+    <th class="ct-c"></th>
+  </tr></thead><tbody>`;
+  list.forEach(t=>{
+    const d=stocks[t.sym];
+    if(!d||d.err){
+      html+=`<tr><td><div class="ct-sym">${t.sym}</div><div class="ct-name" style="color:var(--down)">取得失敗</div></td>
+        <td colspan="5" style="color:var(--muted);font-size:12px">—</td>
+        <td class="ct-c"><button class="btn-del" onclick="remove('${t.sym}')">×</button></td></tr>`;
+      return;
+    }
+    const chgPct=(d.price-d.prev)/d.prev*100;
+    const dir=chgPct>0?'up':chgPct<0?'down':'flat', sign=chgPct>0?'+':'';
+    const jpy=fxRate?Math.round(d.price*fxRate).toLocaleString()+'円':'—';
+    let pnlStr='—', daysStr='—';
+    if(t.buyPrice && parseFloat(t.buyPrice)>0){
+      const bp=parseFloat(t.buyPrice), pr=(d.price-bp)/bp*100, sd=pr>=0?'+':'';
+      pnlStr=`<span class="${pr>=0?'up':'down'}">${sd}${pr.toFixed(2)}%</span>`;
+      if(t.buyDate) daysStr=Math.floor((Date.now()-new Date(t.buyDate))/(864e5))+'日';
+    }
+    html+=`<tr>
+      <td><div class="ct-sym">${t.sym}</div><div class="ct-name">${d.name}</div></td>
+      <td class="ct-r ${dir}">$${d.price.toFixed(2)}</td>
+      <td class="ct-r" style="color:var(--muted)">${jpy}</td>
+      <td class="ct-r ${dir}">${sign}${chgPct.toFixed(2)}%</td>
+      <td class="ct-r">${pnlStr}</td>
+      <td class="ct-r" style="color:var(--muted)">${daysStr}</td>
+      <td class="ct-c"><button class="btn-del" onclick="remove('${t.sym}')">×</button></td>
+    </tr>`;
+  });
+  html+='</tbody></table></div>';
+  view.innerHTML=html;
+}
+
+// ── 追加・削除 ──────────────────────────────────────
 async function addTicker(){
-  const inp = document.getElementById('inp');
-  const sym = inp.value.trim().toUpperCase().replace(/[^A-Z.]/g,'');
+  const inp=document.getElementById('inp');
+  const sym=inp.value.trim().toUpperCase().replace(/[^A-Z.]/g,'');
   if(!sym){ showToast('ティッカーを入力してください',true); return; }
   if(tickers.find(t=>t.sym===sym)){ showToast(`${sym} は追加済み`,true); return; }
   if(tickers.length>=MAX){ showToast(`最大${MAX}銘柄まで`,true); return; }
-  tickers.push({sym, buyPrice:'', buyDate:''});
+  tickers.push({sym,buyPrice:'',buyDate:''});
   save(); inp.value=''; renderAll();
-  try{
-    stocks[sym] = {...await fetchStock(sym), err:false};
-  }catch(e){ stocks[sym]={sym,err:true}; }
+  try{ stocks[sym]=await fetchStock(sym); }
+  catch(e){ stocks[sym]={sym,err:true}; }
   renderAll();
   showToast(`${sym} を追加`);
 }
 
 function remove(sym){
-  tickers = tickers.filter(t=>t.sym!==sym);
+  tickers=tickers.filter(t=>t.sym!==sym);
   delete stocks[sym];
   save(); renderAll();
   showToast(`${sym} を削除`);
 }
 
-// ─────────────────────────
-//  表示モード切替
-// ─────────────────────────
+// ── モード切替 ──────────────────────────────────────
 function toggleMode(){
-  compact = !compact;
-  const btn = document.getElementById('modeBtn');
-  btn.classList.toggle('active', compact);
-  btn.textContent = compact ? '⊟' : '⊞';
+  compact=!compact;
+  const btn=document.getElementById('modeBtn');
+  btn.classList.toggle('active',compact);
+  btn.textContent=compact?'⊟':'⊞';
   renderAll();
 }
 
-// ─────────────────────────
-//  ユーティリティ
-// ─────────────────────────
+// ── ユーティリティ ──────────────────────────────────
 function setStatus(s){
-  document.getElementById('dot').className = 'dot'+(s==='live'?' live':'');
-  document.getElementById('statusTxt').textContent = s==='live'?'監視中 (30秒更新)':'更新中...';
+  document.getElementById('dot').className='dot'+(s==='live'?' live':'');
+  document.getElementById('stxt').textContent=s==='live'?'監視中 (30秒更新)':'更新中...';
 }
-function updateHint(){
-  document.getElementById('countHint').textContent = `${tickers.length}/${MAX}`;
+function updateHint(){ document.getElementById('hint').textContent=`${tickers.length}/${MAX}`; }
+function showToast(msg,err=false){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast show'+(err?' err':'');
+  setTimeout(()=>el.className='toast',2800);
 }
-function showToast(msg, err=false){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast show'+(err?' err':'');
-  setTimeout(()=>el.className='toast', 2800);
-}
-function ts(){
-  return new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}
+function ts(){ return new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
 
 document.getElementById('inp').addEventListener('keydown',e=>{ if(e.key==='Enter') addTicker(); });
 
