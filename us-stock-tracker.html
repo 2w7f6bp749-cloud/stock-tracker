@@ -15,7 +15,6 @@
 }
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
 
-/* HEADER */
 header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
   padding:13px 20px;border-bottom:1px solid var(--border);background:var(--surface);
   position:sticky;top:0;z-index:100}
@@ -30,12 +29,18 @@ header{display:flex;align-items:center;justify-content:space-between;flex-wrap:w
 .status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--neutral)}
 .dot.live{background:var(--up);animation:pulse 2s infinite}
+.dot.err{background:var(--down)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* MAIN */
 main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;max-width:1200px;width:100%;margin:0 auto}
 
-/* TOOLBAR */
+/* PROXY STATUS BAR */
+.proxy-bar{font-size:11px;padding:7px 12px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--muted);display:none}
+.proxy-bar.visible{display:block}
+.proxy-bar.warn{border-color:#ff8f00;color:#ff8f00}
+.proxy-bar.error{border-color:var(--down);color:var(--down)}
+
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .add-input{background:var(--surface);border:1px solid var(--border);color:var(--text);
   font-family:var(--mono);font-size:14px;padding:8px 12px;border-radius:6px;
@@ -47,13 +52,12 @@ main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;max-width:1
 .btn:active{transform:scale(.97)}
 .btn-add{background:var(--accent);color:#000}.btn-add:hover{opacity:.85}
 .btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:8px 11px;font-size:14px}
-.btn-icon:hover{color:var(--text);border-color:var(--border)}
+.btn-icon:hover{color:var(--text)}
 .btn-icon.active{color:var(--accent);border-color:var(--accent)}
 .sort-sel{background:var(--surface2);border:1px solid var(--border);color:var(--muted);
   font-size:12px;padding:8px 10px;border-radius:6px;outline:none;cursor:pointer}
 .hint{font-size:12px;color:var(--muted)}
 
-/* CARD GRID */
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
   padding:16px;display:flex;flex-direction:column;gap:9px;transition:border-color .4s,box-shadow .4s}
@@ -79,7 +83,6 @@ main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;max-width:1
 .meta-item span{display:block;font-family:var(--mono);color:var(--text);font-size:12px;margin-top:1px}
 .updated{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px}
 
-/* PNL */
 .pnl-toggle{font-size:11px;color:var(--accent);background:none;border:none;
   cursor:pointer;text-align:left;padding:2px 0;display:block}
 .pnl-box{display:none;padding:10px;background:var(--surface2);border-radius:6px;
@@ -99,9 +102,7 @@ main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;max-width:1
 .pnl-result{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:2px}
 .pnl-cell{background:var(--bg);border-radius:4px;padding:6px 8px;font-size:10px;color:var(--muted)}
 .pnl-cell span{display:block;font-family:var(--mono);font-size:13px;font-weight:700;margin-top:2px}
-.pnl-cell.full{grid-column:1/-1}
 
-/* COMPACT TABLE */
 .compact-wrap{overflow-x:auto}
 .ctbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px}
 .ctbl th{text-align:left;padding:8px 10px;font-size:10px;color:var(--muted);
@@ -114,12 +115,10 @@ main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;max-width:1
 .ct-r{text-align:right}.ct-c{text-align:center}
 .up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--neutral)}
 
-/* SHIMMER */
 .shimmer{background:linear-gradient(90deg,var(--border) 25%,#1a2840 50%,var(--border) 75%);
   background-size:200% 100%;animation:sh 1.5s infinite;border-radius:4px;height:24px}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* EMPTY / TOAST */
 .empty{text-align:center;padding:60px 20px;color:var(--muted)}
 .empty .big{font-size:44px;margin-bottom:10px}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border);
@@ -130,14 +129,14 @@ main{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;max-width:1
 
 footer{text-align:center;padding:10px;font-size:10px;color:var(--muted);border-top:1px solid var(--border)}
 @media(max-width:480px){
-  .add-input{width:140px}
+  .add-input{width:130px}
   .card-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">US<em>stock</em>WATCH <em style="font-size:10px">v0.3</em></div>
+  <div class="logo">US<em>stock</em>WATCH <em style="font-size:10px">v0.4</em></div>
   <div class="fx-wrap">
     <div class="fx-label">USD / JPY</div>
     <div class="fx-rate" id="fxRate">—</div>
@@ -150,6 +149,8 @@ footer{text-align:center;padding:10px;font-size:10px;color:var(--muted);border-t
 </header>
 
 <main>
+  <div class="proxy-bar" id="proxyBar"></div>
+
   <div class="toolbar">
     <input id="inp" class="add-input" type="text" placeholder="AAPL, TSLA..." maxlength="10">
     <button class="btn btn-add" onclick="addTicker()">＋ 追加</button>
@@ -172,187 +173,233 @@ footer{text-align:center;padding:10px;font-size:10px;color:var(--muted);border-t
 <footer>データ: Yahoo Finance (非公式) ／ 為替: open.er-api.com ／ 自動更新 30秒</footer>
 
 <script>
-const MAX   = 10;
-const INT   = 30000;
-const SKEY  = 'usstock_v3';   // ← キー固定（以降変更しない）
-const SKEY2 = 'usstock_v2';   // 旧キー（マイグレーション用）
-const SKEY1 = 'usstock_tickers'; // 最旧キー
-const PROXY = 'https://corsproxy.io/?';
+// ─────────────────────────────────────────
+//  設定
+// ─────────────────────────────────────────
+const MAX  = 10;
+const INT  = 30000;
+const SKEY = 'usstock_v3'; // キー固定
+const SKEY_OLD = ['usstock_v2','usstock_tickers'];
+
+// CORSプロキシ: 順番に試す（フォールバック）
+const PROXIES = [
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+  url => `https://proxy.cors.sh/${url}`,
+];
+let proxyIdx = 0; // 現在使用中のプロキシ index
+
+// Yahoo Finance エンドポイント（query2 を優先、失敗時 query1）
+const YF_HOSTS = ['query2.finance.yahoo.com','query1.finance.yahoo.com'];
+let yfHostIdx  = 0;
 
 let fxRate  = null;
-let tickers = [];   // [{sym, buyPrice, buyDate}]
+let tickers = [];
 let stocks  = {};
 let compact = false;
 
-// ── 初期化 ──────────────────────────────────────────
-function init(){
-  migrate();
+// ─────────────────────────────────────────
+//  CORS プロキシ経由 fetch（フォールバック付き）
+// ─────────────────────────────────────────
+async function proxyFetch(targetUrl, retryProxy = true) {
+  const makeUrl = PROXIES[proxyIdx];
+  const proxyUrl = makeUrl(targetUrl);
+  try {
+    const r = await fetch(proxyUrl, {signal: AbortSignal.timeout(8000)});
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r;
+  } catch(e) {
+    if (retryProxy && proxyIdx < PROXIES.length - 1) {
+      proxyIdx++;
+      updateProxyBar();
+      return proxyFetch(targetUrl, true);
+    }
+    throw e;
+  }
+}
+
+function updateProxyBar() {
+  const el = document.getElementById('proxyBar');
+  if (proxyIdx === 0) { el.className='proxy-bar'; return; }
+  const names = ['AllOrigins','CorsProxy.io','cors.sh'];
+  el.className = 'proxy-bar visible warn';
+  el.textContent = `⚠ プロキシ切替中: ${names[proxyIdx]} を使用 (自動フォールバック)`;
+}
+
+// ─────────────────────────────────────────
+//  初期化・マイグレーション
+// ─────────────────────────────────────────
+function init() {
+  // 旧キーから移行
+  const saved = localStorage.getItem(SKEY);
+  if (saved) {
+    try { tickers = JSON.parse(saved); }
+    catch(e) { tickers = []; }
+  } else {
+    for (const old of SKEY_OLD) {
+      const v = localStorage.getItem(old);
+      if (v) {
+        try {
+          const parsed = JSON.parse(v);
+          tickers = parsed.map(s => typeof s==='string' ? {sym:s,buyPrice:'',buyDate:''} : s);
+          save();
+          localStorage.removeItem(old);
+          showToast('銘柄データを引き継ぎました');
+          break;
+        } catch(e) {}
+      }
+    }
+    if (!tickers.length) {
+      tickers = ['AAPL','NVDA','TSLA','MSFT','AMZN'].map(sym=>({sym,buyPrice:'',buyDate:''}));
+      save();
+    }
+  }
   renderAll();
   fetchAll();
   setInterval(fetchAll, INT);
 }
 
-// ── マイグレーション（旧キー引き継ぎ） ────────────────
-function migrate(){
-  // v3データがあればそのまま使う
-  const v3 = localStorage.getItem(SKEY);
-  if(v3){ try{ tickers=JSON.parse(v3); return; }catch(e){} }
+function save() { localStorage.setItem(SKEY, JSON.stringify(tickers)); }
 
-  // v2 → v3
-  const v2 = localStorage.getItem(SKEY2);
-  if(v2){
-    try{
-      tickers = JSON.parse(v2);
-      save();
-      localStorage.removeItem(SKEY2);
-      showToast('銘柄データを引き継ぎました');
-      return;
-    }catch(e){}
+// ─────────────────────────────────────────
+//  為替取得（フォールバック付き）
+// ─────────────────────────────────────────
+async function fetchFX() {
+  const urls = [
+    'https://open.er-api.com/v6/latest/USD',
+    'https://api.exchangerate-api.com/v4/latest/USD',
+  ];
+  for (const url of urls) {
+    try {
+      const r = await proxyFetch(url);
+      const d = await r.json();
+      const rate = d.rates?.JPY || (d.conversion_rates?.JPY);
+      if (rate) {
+        fxRate = rate;
+        const el = document.getElementById('fxRate');
+        el.textContent = fxRate.toFixed(2) + ' 円';
+        el.classList.remove('fx-flash'); void el.offsetWidth; el.classList.add('fx-flash');
+        document.getElementById('fxTime').textContent = '更新:' + ts();
+        return;
+      }
+    } catch(e) { /* 次のURLへ */ }
   }
+  document.getElementById('fxTime').textContent = '取得失敗';
+}
 
-  // v1（最旧形式: 文字列配列）→ v3
-  const v1 = localStorage.getItem(SKEY1);
-  if(v1){
-    try{
-      const arr = JSON.parse(v1);
-      tickers = arr.map(s => typeof s==='string'?{sym:s,buyPrice:'',buyDate:''}:s);
-      save();
-      localStorage.removeItem(SKEY1);
-      showToast('銘柄データを引き継ぎました');
-      return;
-    }catch(e){}
+// ─────────────────────────────────────────
+//  株価取得（ホストフォールバック付き）
+// ─────────────────────────────────────────
+async function fetchStock(sym) {
+  let lastErr;
+  for (let i = 0; i < YF_HOSTS.length; i++) {
+    const host = YF_HOSTS[(yfHostIdx + i) % YF_HOSTS.length];
+    const url  = `https://${host}/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&range=1d`;
+    try {
+      const r = await proxyFetch(url);
+      const j = await r.json();
+      if (!j.chart?.result?.[0]) throw new Error('no result');
+      const m = j.chart.result[0].meta;
+      if (i > 0) yfHostIdx = (yfHostIdx + i) % YF_HOSTS.length; // 成功したホストを記憶
+      return {
+        sym: m.symbol, name: m.shortName || m.symbol,
+        price: m.regularMarketPrice, prev: m.chartPreviousClose || m.previousClose,
+        open: m.regularMarketOpen || null, high: m.regularMarketDayHigh || null,
+        low:  m.regularMarketDayLow  || null, vol: m.regularMarketVolume  || null,
+        at: ts(), err: false
+      };
+    } catch(e) { lastErr = e; }
   }
-
-  // 初回デフォルト
-  tickers = ['AAPL','NVDA','TSLA','MSFT','AMZN'].map(sym=>({sym,buyPrice:'',buyDate:''}));
-  save();
+  throw lastErr;
 }
 
-function save(){ localStorage.setItem(SKEY, JSON.stringify(tickers)); }
-
-// ── 為替取得 ────────────────────────────────────────
-async function fetchFX(){
-  try{
-    const r = await fetch(PROXY + encodeURIComponent('https://open.er-api.com/v6/latest/USD'));
-    const d = await r.json();
-    if(d.rates?.JPY){
-      fxRate = d.rates.JPY;
-      const el = document.getElementById('fxRate');
-      el.textContent = fxRate.toFixed(2)+' 円';
-      el.classList.remove('fx-flash'); void el.offsetWidth; el.classList.add('fx-flash');
-      document.getElementById('fxTime').textContent = '更新:'+ts();
-    }
-  }catch(e){ document.getElementById('fxTime').textContent='取得失敗'; }
-}
-
-// ── 株価取得（現在値） ──────────────────────────────
-async function fetchStock(sym){
-  const url = PROXY + encodeURIComponent(
-    `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=1d`);
-  const r = await fetch(url);
-  if(!r.ok) throw new Error(r.status);
-  const j = await r.json();
-  const m = j.chart.result[0].meta;
-  return{
-    sym:m.symbol, name:m.shortName||m.symbol,
-    price:m.regularMarketPrice, prev:m.chartPreviousClose||m.previousClose,
-    open:m.regularMarketOpen||null, high:m.regularMarketDayHigh||null,
-    low:m.regularMarketDayLow||null, vol:m.regularMarketVolume||null,
-    at:ts(), err:false
-  };
-}
-
-// ── 過去終値取得 ────────────────────────────────────
-async function fetchHistPrice(sym, dateStr){
-  // dateStr: "YYYY-MM-DD"
+// ─────────────────────────────────────────
+//  過去終値取得
+// ─────────────────────────────────────────
+async function fetchHistPrice(sym, dateStr) {
   const d    = new Date(dateStr);
-  const from = Math.floor(d.getTime()/1000);
-  const to   = from + 86400*4; // 余裕を持って4日分取得（週末対応）
-  const url  = PROXY + encodeURIComponent(
-    `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&period1=${from}&period2=${to}`);
-  const r = await fetch(url);
-  if(!r.ok) throw new Error(r.status);
-  const j = await r.json();
-  const res = j.chart.result[0];
-  const closes = res.indicators.quote[0].close;
-  // null除外して最初の有効値
-  const price = closes.find(v => v != null);
-  if(!price) throw new Error('no data');
+  const from = Math.floor(d.getTime() / 1000);
+  const to   = from + 86400 * 5;
+  const host = YF_HOSTS[yfHostIdx];
+  const url  = `https://${host}/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&period1=${from}&period2=${to}`;
+  const r    = await proxyFetch(url);
+  const j    = await r.json();
+  const closes = j.chart.result[0].indicators.quote[0].close;
+  const price  = closes.find(v => v != null);
+  if (!price) throw new Error('no data');
   return price;
 }
 
-// ── 全データ取得 ────────────────────────────────────
-async function fetchAll(){
+// ─────────────────────────────────────────
+//  全データ取得
+// ─────────────────────────────────────────
+async function fetchAll() {
   setStatus('loading');
   await fetchFX();
-  await Promise.allSettled(tickers.map(async t=>{
-    try{
+  await Promise.allSettled(tickers.map(async t => {
+    try {
       stocks[t.sym] = await fetchStock(t.sym);
-    }catch(e){
-      if(!stocks[t.sym]) stocks[t.sym]={sym:t.sym,err:true};
+    } catch(e) {
+      if (!stocks[t.sym]) stocks[t.sym] = {sym: t.sym, err: true};
+      stocks[t.sym].errMsg = String(e);
     }
   }));
   setStatus('live');
   renderAll();
 }
 
-// ── ソート ──────────────────────────────────────────
-function sorted(){
+// ─────────────────────────────────────────
+//  ソート
+// ─────────────────────────────────────────
+function sorted() {
   const mode = document.getElementById('sortSel').value;
   const arr  = [...tickers];
-  const getPct = sym=>{
-    const d=stocks[sym]; if(!d||d.err) return -9999;
-    return (d.price-d.prev)/d.prev*100;
-  };
-  const getPnl = t=>{
-    const d=stocks[t.sym]; if(!d||d.err||!t.buyPrice) return -9999;
-    return (d.price-parseFloat(t.buyPrice))/parseFloat(t.buyPrice)*100;
-  };
-  if(mode==='pct_d') return arr.sort((a,b)=>getPct(b.sym)-getPct(a.sym));
-  if(mode==='pct_a') return arr.sort((a,b)=>getPct(a.sym)-getPct(b.sym));
-  if(mode==='pnl_d') return arr.sort((a,b)=>getPnl(b)-getPnl(a));
-  if(mode==='pnl_a') return arr.sort((a,b)=>getPnl(a)-getPnl(b));
-  if(mode==='sym')   return arr.sort((a,b)=>a.sym.localeCompare(b.sym));
+  const getPct = sym => { const d=stocks[sym]; return (!d||d.err)?-9999:(d.price-d.prev)/d.prev*100; };
+  const getPnl = t   => { const d=stocks[t.sym]; return (!d||d.err||!t.buyPrice)?-9999:(d.price-parseFloat(t.buyPrice))/parseFloat(t.buyPrice)*100; };
+  if (mode==='pct_d') return arr.sort((a,b)=>getPct(b.sym)-getPct(a.sym));
+  if (mode==='pct_a') return arr.sort((a,b)=>getPct(a.sym)-getPct(b.sym));
+  if (mode==='pnl_d') return arr.sort((a,b)=>getPnl(b)-getPnl(a));
+  if (mode==='pnl_a') return arr.sort((a,b)=>getPnl(a)-getPnl(b));
+  if (mode==='sym')   return arr.sort((a,b)=>a.sym.localeCompare(b.sym));
   return arr;
 }
 
-// ── 描画ルーター ────────────────────────────────────
-function renderAll(){
+// ─────────────────────────────────────────
+//  描画
+// ─────────────────────────────────────────
+function renderAll() {
   updateHint();
   const view = document.getElementById('view');
   const list = sorted();
-  if(!list.length){
+  if (!list.length) {
     view.innerHTML=`<div class="empty"><div class="big">📈</div><p>ティッカーを追加してください</p></div>`;
     return;
   }
-  // スクロール位置を保持
   const scrollY = window.scrollY;
   compact ? renderTable(list,view) : renderCards(list,view);
   window.scrollTo({top:scrollY,behavior:'instant'});
 }
 
-// ── カードモード ────────────────────────────────────
-function renderCards(list,view){
+function renderCards(list,view) {
   view.innerHTML = '<div class="card-grid">'+list.map(t=>cardHTML(t)).join('')+'</div>';
-  list.forEach(t=>{
+  list.forEach(t => {
     const d=stocks[t.sym]; if(!d||d.err) return;
     const dir=d.price>d.prev?'up':d.price<d.prev?'down':null;
-    if(dir){
-      const el=document.getElementById('c-'+t.sym);
+    if(dir){ const el=document.getElementById('c-'+t.sym);
       if(el){ el.classList.add('flash-'+dir); setTimeout(()=>el.classList.remove('flash-'+dir),1400); }
     }
   });
 }
 
-function cardHTML(t){
-  const d=stocks[t.sym];
-  if(!d||d.err) return `
+function cardHTML(t) {
+  const d = stocks[t.sym];
+  if (!d||d.err) return `
     <div class="card" id="c-${t.sym}">
       <div class="card-hd">
         <div><div class="sym">${t.sym}</div><div class="cname" style="color:var(--down)">取得失敗</div></div>
         <button class="btn-del" onclick="remove('${t.sym}')">×</button>
       </div>
-      <div style="font-size:12px;color:var(--muted)">ティッカーを確認してください</div>
+      <div style="font-size:11px;color:var(--muted)">ティッカー確認 または ↻ で再試行</div>
     </div>`;
 
   const chg=d.price-d.prev, pct=chg/d.prev*100;
@@ -385,8 +432,7 @@ function cardHTML(t){
   </div>`;
 }
 
-// ── 損益セクション ──────────────────────────────────
-function pnlHTML(t,d){
+function pnlHTML(t,d) {
   const hasBuy = t.buyPrice && parseFloat(t.buyPrice)>0;
   let result='';
   if(hasBuy){
@@ -402,19 +448,17 @@ function pnlHTML(t,d){
       <div class="pnl-cell">保有日数<span>${days!=null?days+'日':'—'}</span></div>
     </div>`;
   }
-
-  const open = document.getElementById('pnl-'+t.sym)?.classList.contains('open');
-
+  const isOpen = document.getElementById('pnl-'+t.sym)?.classList.contains('open');
   return `
   <button class="pnl-toggle" onclick="togglePnl('${t.sym}')">
     ${hasBuy?'💹 損益表示中 ▾':'＋ 購入情報を入力 ▾'}
   </button>
-  <div class="pnl-box${(hasBuy||open)?' open':''}" id="pnl-${t.sym}">
+  <div class="pnl-box${(hasBuy||isOpen)?' open':''}" id="pnl-${t.sym}">
     <div class="pnl-row">
       <span class="pnl-lbl">購入単価</span>
       <input class="pnl-inp" type="number" step="0.01" min="0" placeholder="150.00"
         value="${t.buyPrice||''}"
-        onchange="saveBuy('${t.sym}','price',this.value)"
+        onchange="saveBuyField('${t.sym}','price',this.value)"
         id="bp-${t.sym}"> USD
     </div>
     <div class="pnl-row">
@@ -432,76 +476,20 @@ function pnlHTML(t,d){
   </div>`;
 }
 
-// ── 購入日変更 → ボタン有効化のみ（画面飛び防止） ──────
-function onDateChange(sym, val){
-  // stateだけ更新し再描画しない
-  const t = tickers.find(x=>x.sym===sym);
-  if(!t) return;
-  t.buyDate = val;
-  save();
-  // ボタンだけ有効化
-  const btn = document.getElementById('fb-'+sym);
-  if(btn) btn.disabled = !val;
-  // メッセージリセット
-  const fm = document.getElementById('fm-'+sym);
-  if(fm) fm.textContent='';
-}
-
-// ── 購入日の終値を取得して単価にセット ───────────────
-async function fetchBuyPrice(sym){
-  const t   = tickers.find(x=>x.sym===sym);
-  if(!t || !t.buyDate) return;
-  const btn = document.getElementById('fb-'+sym);
-  const fm  = document.getElementById('fm-'+sym);
-  const bpEl= document.getElementById('bp-'+sym);
-  if(btn){ btn.disabled=true; btn.textContent='取得中...'; }
-  if(fm)  fm.textContent='';
-  try{
-    const price = await fetchHistPrice(sym, t.buyDate);
-    t.buyPrice  = price.toFixed(2);
-    save();
-    if(bpEl) bpEl.value = t.buyPrice;
-    if(fm)   fm.textContent = `✓ ${t.buyDate} 終値: $${t.buyPrice}`;
-    // 損益部分だけ再描画
-    renderAll();
-  }catch(e){
-    if(fm) fm.textContent='取得失敗。日付か銘柄を確認してください';
-  }finally{
-    if(btn){ btn.disabled=false; btn.textContent='終値取得'; }
-  }
-}
-
-// ── 購入単価手動変更 ────────────────────────────────
-function saveBuy(sym, field, val){
-  const t=tickers.find(x=>x.sym===sym);
-  if(!t) return;
-  if(field==='price') t.buyPrice=val;
-  if(field==='date')  t.buyDate=val;
-  save();
-  renderAll();
-}
-
-function togglePnl(sym){
-  const el=document.getElementById('pnl-'+sym);
-  if(el) el.classList.toggle('open');
-}
-
-// ── コンパクトテーブル ──────────────────────────────
-function renderTable(list,view){
+// ─────────────────────────────────────────
+//  コンパクトテーブル
+// ─────────────────────────────────────────
+function renderTable(list,view) {
   let html=`<div class="compact-wrap"><table class="ctbl"><thead><tr>
-    <th>銘柄</th>
-    <th class="ct-r">現在値(USD)</th>
-    <th class="ct-r">円換算</th>
-    <th class="ct-r">騰落率</th>
-    <th class="ct-r">損益率</th>
-    <th class="ct-r">保有日数</th>
-    <th class="ct-c"></th>
+    <th>銘柄</th><th class="ct-r">現在値</th><th class="ct-r">円換算</th>
+    <th class="ct-r">騰落率</th><th class="ct-r">損益率</th>
+    <th class="ct-r">保有日数</th><th class="ct-c"></th>
   </tr></thead><tbody>`;
   list.forEach(t=>{
     const d=stocks[t.sym];
     if(!d||d.err){
       html+=`<tr><td><div class="ct-sym">${t.sym}</div><div class="ct-name" style="color:var(--down)">取得失敗</div></td>
-        <td colspan="5" style="color:var(--muted);font-size:12px">—</td>
+        <td colspan="5" style="color:var(--muted);font-size:11px">— ↻ で再試行</td>
         <td class="ct-c"><button class="btn-del" onclick="remove('${t.sym}')">×</button></td></tr>`;
       return;
     }
@@ -528,30 +516,68 @@ function renderTable(list,view){
   view.innerHTML=html;
 }
 
-// ── 追加・削除 ──────────────────────────────────────
-async function addTicker(){
+// ─────────────────────────────────────────
+//  購入情報
+// ─────────────────────────────────────────
+function onDateChange(sym, val) {
+  const t=tickers.find(x=>x.sym===sym); if(!t) return;
+  t.buyDate=val; save();
+  const btn=document.getElementById('fb-'+sym); if(btn) btn.disabled=!val;
+  const fm=document.getElementById('fm-'+sym);  if(fm)  fm.textContent='';
+}
+
+async function fetchBuyPrice(sym) {
+  const t=tickers.find(x=>x.sym===sym); if(!t||!t.buyDate) return;
+  const btn=document.getElementById('fb-'+sym);
+  const fm =document.getElementById('fm-'+sym);
+  const bpEl=document.getElementById('bp-'+sym);
+  if(btn){ btn.disabled=true; btn.textContent='取得中...'; }
+  if(fm) fm.textContent='';
+  try {
+    const price=await fetchHistPrice(sym,t.buyDate);
+    t.buyPrice=price.toFixed(2); save();
+    if(bpEl) bpEl.value=t.buyPrice;
+    if(fm)   fm.textContent=`✓ ${t.buyDate} 終値: $${t.buyPrice}`;
+    renderAll();
+  } catch(e) {
+    if(fm) fm.textContent='取得失敗。日付・銘柄を確認してください';
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent='終値取得'; }
+  }
+}
+
+function saveBuyField(sym,field,val) {
+  const t=tickers.find(x=>x.sym===sym); if(!t) return;
+  if(field==='price') t.buyPrice=val;
+  if(field==='date')  t.buyDate=val;
+  save(); renderAll();
+}
+
+function togglePnl(sym) {
+  const el=document.getElementById('pnl-'+sym); if(el) el.classList.toggle('open');
+}
+
+// ─────────────────────────────────────────
+//  追加・削除
+// ─────────────────────────────────────────
+async function addTicker() {
   const inp=document.getElementById('inp');
   const sym=inp.value.trim().toUpperCase().replace(/[^A-Z.]/g,'');
   if(!sym){ showToast('ティッカーを入力してください',true); return; }
   if(tickers.find(t=>t.sym===sym)){ showToast(`${sym} は追加済み`,true); return; }
   if(tickers.length>=MAX){ showToast(`最大${MAX}銘柄まで`,true); return; }
-  tickers.push({sym,buyPrice:'',buyDate:''});
-  save(); inp.value=''; renderAll();
-  try{ stocks[sym]=await fetchStock(sym); }
+  tickers.push({sym,buyPrice:'',buyDate:''}); save(); inp.value=''; renderAll();
+  try { stocks[sym]=await fetchStock(sym); }
   catch(e){ stocks[sym]={sym,err:true}; }
-  renderAll();
-  showToast(`${sym} を追加`);
+  renderAll(); showToast(`${sym} を追加`);
 }
 
-function remove(sym){
-  tickers=tickers.filter(t=>t.sym!==sym);
-  delete stocks[sym];
-  save(); renderAll();
-  showToast(`${sym} を削除`);
+function remove(sym) {
+  tickers=tickers.filter(t=>t.sym!==sym); delete stocks[sym];
+  save(); renderAll(); showToast(`${sym} を削除`);
 }
 
-// ── モード切替 ──────────────────────────────────────
-function toggleMode(){
+function toggleMode() {
   compact=!compact;
   const btn=document.getElementById('modeBtn');
   btn.classList.toggle('active',compact);
@@ -559,9 +585,11 @@ function toggleMode(){
   renderAll();
 }
 
-// ── ユーティリティ ──────────────────────────────────
-function setStatus(s){
-  document.getElementById('dot').className='dot'+(s==='live'?' live':'');
+// ─────────────────────────────────────────
+//  ユーティリティ
+// ─────────────────────────────────────────
+function setStatus(s) {
+  document.getElementById('dot').className='dot'+(s==='live'?' live':s==='err'?' err':'');
   document.getElementById('stxt').textContent=s==='live'?'監視中 (30秒更新)':'更新中...';
 }
 function updateHint(){ document.getElementById('hint').textContent=`${tickers.length}/${MAX}`; }
